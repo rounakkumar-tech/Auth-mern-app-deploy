@@ -1,0 +1,8 @@
+{
+    rerites: [
+        {
+            source: "/(.*)",
+            destination : "/index.html" 
+        }
+    ]
+}
