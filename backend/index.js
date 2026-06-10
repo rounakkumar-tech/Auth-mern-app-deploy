@@ -4,7 +4,7 @@ const cors = require('cors');
 const AuthRouter = require('./Routes/AuthRouters');
 
 require('dotenv').config();
-require('./Models/db');
+const connectDB = require('./Models/db');
 
 app.get('/ping', (req, res) => {
     res.send('pong');
@@ -14,12 +14,18 @@ app.use(express.json());
 app.use(cors());
 app.use('/auth', AuthRouter);
 
-
- 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
 
-module.exports = app;
+startServer();

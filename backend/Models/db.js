@@ -7,11 +7,14 @@ if (!mongo_url) {
   process.exit(1);
 }
 
-mongoose.connect(mongo_url)
-  .then(() => {
+const connectDB = async () => {
+  try {
+    await mongoose.connect(mongo_url);
     console.log('Connected to MongoDB');
-  })
-  .catch((err) => {
+  } catch (err) {
     console.error('Error connecting to MongoDB:', err);
-    process.exit(1);
-  });
+    throw err;
+  }
+};
+
+module.exports = connectDB;
